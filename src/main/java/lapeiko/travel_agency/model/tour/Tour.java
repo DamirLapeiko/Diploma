@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,10 +18,10 @@ import java.util.Set;
 @Setter
 public class Tour extends BaseEntity {
     @Column(name = "date", nullable = false)
-    private Date date;
+    private int date;
 
     @Column(name = "duration", nullable = false)
-    private Instant duration;
+    private int duration;
 
     @Column(name = "cost", nullable = false)
     private double cost;
@@ -40,7 +38,7 @@ public class Tour extends BaseEntity {
     @Column(name = "country_id", nullable = false)
     private Country country;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Admin admin;
 
     @ManyToMany

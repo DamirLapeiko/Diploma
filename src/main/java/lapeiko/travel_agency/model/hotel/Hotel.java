@@ -2,6 +2,7 @@ package lapeiko.travel_agency.model.hotel;
 
 import jakarta.persistence.*;
 import lapeiko.travel_agency.model.BaseEntity;
+import lapeiko.travel_agency.model.admin.Admin;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -23,5 +24,6 @@ public class Hotel extends BaseEntity {
     @Column(name = "features", nullable = false)
     private HotelFeatures features;
 
-
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Admin admin;
 }

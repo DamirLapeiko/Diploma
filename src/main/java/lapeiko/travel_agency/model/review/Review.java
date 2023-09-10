@@ -23,7 +23,7 @@ public class Review extends BaseEntity {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 
