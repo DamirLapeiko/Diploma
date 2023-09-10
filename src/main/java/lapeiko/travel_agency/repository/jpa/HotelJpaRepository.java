@@ -16,11 +16,13 @@ public class HotelJpaRepository extends BaseJpaRepository<Hotel, Long>
     }
 
     @Override
-    public List<Hotel> getAllHotels() {
+    public List<Hotel> getAllHotels(int pageSize, int pageNumber) {
         return entityManager.createQuery("""
                         SELECT hotel
                         FROM Hotel hotel
                         """, Hotel.class)
+                .setMaxResults(pageSize)
+                .setFirstResult(pageSize * pageNumber)
                 .getResultList();
     }
 
@@ -32,6 +34,7 @@ public class HotelJpaRepository extends BaseJpaRepository<Hotel, Long>
                         WHERE hotel.features = features
                         """, Hotel.class)
                 .setParameter("features", features)
-                .getResultStream().findFirst();
+                .getResultStream()
+                .findFirst();
     }
 }

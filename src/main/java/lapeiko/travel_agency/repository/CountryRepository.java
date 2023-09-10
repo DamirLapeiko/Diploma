@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CountryRepository extends BaseRepository<Country, Long> {
 
-    List<Country> getAllCountries();
+    List<Country> getAllCountries(int pageSize, int pageNumber);
 }
