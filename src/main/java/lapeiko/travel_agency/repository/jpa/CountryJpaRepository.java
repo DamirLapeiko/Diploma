@@ -15,11 +15,13 @@ public class CountryJpaRepository extends BaseJpaRepository<Country, Long>
     }
 
     @Override
-    public List<Country> getAllCountries() {
+    public List<Country> getAllCountries(int pageSize, int pageNumber) {
         return entityManager.createQuery("""
                         SELECT country
                         FROM Country country
                         """, Country.class)
+                .setMaxResults(pageSize)
+                .setFirstResult(pageSize * pageNumber)
                 .getResultList();
     }
 }

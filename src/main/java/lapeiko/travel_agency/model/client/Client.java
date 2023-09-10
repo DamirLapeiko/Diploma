@@ -1,8 +1,7 @@
 package lapeiko.travel_agency.model.client;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lapeiko.travel_agency.model.BaseEntity;
 import lapeiko.travel_agency.model.tour.Tour;
 import lombok.Getter;
@@ -14,6 +13,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "client")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -23,6 +23,7 @@ public class Client extends BaseEntity {
     private String email;
 
     @Column(name = "password_hash", nullable = false)
+    @Size(min = 4, message = "Password should be longer then 3 characters")
     private String passwordHash;
 
     @Column(name = "first_name", nullable = false)
@@ -31,7 +32,7 @@ public class Client extends BaseEntity {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @ManyToMany(mappedBy = "clients")
+    @ManyToMany(mappedBy = "clients", fetch = FetchType.EAGER)
     private Set<Tour> clientInTours;
 
     @Override

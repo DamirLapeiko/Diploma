@@ -15,16 +15,6 @@ CREATE TABLE client
     last_name     TEXT NOT NULL
 );
 
-CREATE TABLE review
-(
-    id         BIGSERIAL PRIMARY KEY,
-    content    TEXT      NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    client_id  BIGINT    NOT NULL REFERENCES client,
-    tour_id    BIGINT    NOT NULL REFERENCES tour,
-    UNIQUE (client_id, tour_id)
-);
-
 CREATE TABLE country
 (
     id   BIGSERIAL PRIMARY KEY,
@@ -42,11 +32,21 @@ CREATE TABLE hotel
 CREATE TABLE tour
 (
     id          BIGSERIAL PRIMARY KEY,
-    date        DATE             NOT NULL,
+    date        BIGINT           NOT NULL,
     duration    BIGINT           NOT NULL,
     description TEXT             NOT NULL,
     cost        DOUBLE PRECISION NOT NULL,
     tour_type   TEXT             NOT NULL,
     hotel_id    BIGINT           NOT NULL REFERENCES hotel,
     country_id  BIGINT           NOT NULL REFERENCES country
+);
+
+CREATE TABLE review
+(
+    id         BIGSERIAL PRIMARY KEY,
+    content    TEXT      NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    client_id  BIGINT    NOT NULL REFERENCES client,
+    tour_id    BIGINT    NOT NULL REFERENCES tour,
+    UNIQUE (client_id, tour_id)
 );

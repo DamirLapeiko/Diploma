@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface HotelRepository extends BaseRepository<Hotel, Long> {
 
-    List<Hotel> getAllHotels();
+    List<Hotel> getAllHotels(int pageSize, int pageNumber);
 
     Optional<Hotel> getHotelByFeatures(String features);
 }
