@@ -1,11 +1,11 @@
 package lapeiko.travel_agency.service;
 
-import lapeiko.travel_agency.model.country.CountryDto;
+import lapeiko.travel_agency.service.util.TourSearchParameter;
 import lapeiko.travel_agency.model.hotel.HotelDto;
 import lapeiko.travel_agency.model.review.ReviewShortDto;
 import lapeiko.travel_agency.model.tour.TourDto;
 import lapeiko.travel_agency.model.tour.TourShortDto;
-import lapeiko.travel_agency.service.util.TourSearchParameter;
+import lapeiko.travel_agency.service.exception.NoSearchParameterException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +18,14 @@ public interface TourClientService {
 
     Optional<TourShortDto> getTourById(long id);
 
-    List<TourShortDto> getPageWithToursByCountry(CountryDto dto, int pageNumber);
+    List<TourShortDto> getPageWithToursByCountry(String countryQuery, int pageNumber);
 
-    Optional<TourShortDto> getPageWithTourAndHotelByFeatures(HotelDto dto);
+    List<TourShortDto> getPageWithTourAndHotelByFeatures(String hotelFeatures, int pageNumber);
 
-    Optional<TourShortDto> getPageWithTourByTourType(TourDto dto);
+    List<TourDto> getPageWithTourByTourType(String tourType, int pageNumber);
 
-    List<TourShortDto> getToursByParameters(TourSearchParameter[] parameters, int pageNumber);
+    List<TourShortDto> getToursByParameters(TourSearchParameter[] parameters, int pageNumber) throws NoSearchParameterException;
 
-    Optional<TourShortDto> getPageWithReviewsOnTour(ReviewShortDto dto, int pageNumber);
+    List<TourShortDto> getPageWithReviewsOnTour(ReviewShortDto dto, int pageNumber);
 
 }

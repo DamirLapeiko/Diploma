@@ -3,7 +3,6 @@ package lapeiko.travel_agency.model.review;
 import lombok.Value;
 
 @Value
-public class ReviewCreateDto {
-    long tourId;
+public class ReviewUpdateDto {
     String content;
 }

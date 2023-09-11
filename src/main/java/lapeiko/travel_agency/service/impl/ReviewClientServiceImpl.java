@@ -4,21 +4,19 @@ import lapeiko.travel_agency.model.client.Client;
 import lapeiko.travel_agency.model.review.Review;
 import lapeiko.travel_agency.model.review.ReviewCreateDto;
 import lapeiko.travel_agency.model.review.ReviewDto;
-import lapeiko.travel_agency.model.review.ReviewShortDto;
-import lapeiko.travel_agency.model.security.ClientPrincipal;
 import lapeiko.travel_agency.model.tour.Tour;
-import lapeiko.travel_agency.model.tour.TourShortDto;
 import lapeiko.travel_agency.repository.ClientRepository;
 import lapeiko.travel_agency.repository.ReviewRepository;
 import lapeiko.travel_agency.repository.TourRepository;
-import lapeiko.travel_agency.service.ReviewClientService;
 import lapeiko.travel_agency.service.TourClientService;
 import lapeiko.travel_agency.service.exception.BusinessException;
+import lapeiko.travel_agency.model.security.ClientPrincipal;
+import lapeiko.travel_agency.service.ReviewClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +28,9 @@ public class ReviewClientServiceImpl implements ReviewClientService {
     private final TourClientService tourClientService;
 
     @Override
-    public ReviewDto create(TourShortDto dto, ReviewCreateDto review, ClientPrincipal principal) {
-        Tour tour = tourRepo.findById(dto.getId())
+    @Transactional
+    public ReviewDto create(ReviewCreateDto review, ClientPrincipal principal) {
+        Tour tour = tourRepo.findById(review.getTourId())
                 .orElseThrow(() -> new BusinessException("Tour is not found"));
         Client client = clientRepo.getReferenceById(principal.getId());
         Instant createdAt = Instant.now();
@@ -45,8 +44,9 @@ public class ReviewClientServiceImpl implements ReviewClientService {
     }
 
     @Override
-    public ReviewDto update(TourShortDto dto, long id, ReviewShortDto review, ClientPrincipal principal) {
-        tourRepo.findById(dto.getId())
+    @Transactional
+    public ReviewDto update(long id, ReviewDto review, ClientPrincipal principal) {
+        tourRepo.findById(review.getTour().getId())
                 .orElseThrow(() -> new BusinessException("Tour is not found"));
         reviewRepo.findById(id)
                 .orElseThrow(() -> new BusinessException("Review is not found"));
@@ -60,13 +60,11 @@ public class ReviewClientServiceImpl implements ReviewClientService {
     }
 
     @Override
-    public Optional<TourShortDto> remove(long id, int pageNumber, TourShortDto dto, ReviewShortDto review, ClientPrincipal principal) {
-        tourRepo.findById(dto.getId())
-                .orElseThrow(() -> new BusinessException("Tour is not found"));
+    @Transactional
+    public void remove(long id, ClientPrincipal principal) {
         Review deletedReview = reviewRepo.findById(id)
                 .orElseThrow(() -> new BusinessException("Review is not found"));
         clientRepo.getReferenceById(principal.getId());
         reviewRepo.remove(deletedReview);
-        return tourClientService.getPageWithReviewsOnTour(review, pageNumber);
     }
 }

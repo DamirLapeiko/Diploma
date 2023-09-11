@@ -3,14 +3,16 @@ package lapeiko.travel_agency.service.impl;
 import lapeiko.travel_agency.model.hotel.Hotel;
 import lapeiko.travel_agency.model.hotel.HotelCreateDto;
 import lapeiko.travel_agency.model.hotel.HotelDto;
+import lapeiko.travel_agency.repository.AdminRepository;
+import lapeiko.travel_agency.service.exception.BusinessException;
 import lapeiko.travel_agency.model.hotel.HotelFeatures;
 import lapeiko.travel_agency.model.security.AdminPrincipal;
-import lapeiko.travel_agency.repository.AdminRepository;
 import lapeiko.travel_agency.repository.HotelRepository;
 import lapeiko.travel_agency.service.HotelAdminService;
-import lapeiko.travel_agency.service.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,7 @@ public class HotelAdminServiceImpl implements HotelAdminService {
     private final AdminRepository adminRepo;
 
     @Override
+    @Transactional(readOnly = true)
     public List<HotelDto> getPageWithAllHotels(int pageNumber) {
         return hotelRepo.getAllHotels(HOTEL_PAGE_SIZE, pageNumber)
                 .stream()
@@ -33,6 +36,7 @@ public class HotelAdminServiceImpl implements HotelAdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<HotelDto> getPageWithHotelByFeatures(HotelDto dto) {
         return hotelRepo.getHotelByFeatures(dto.getHotelFeatures())
                 .stream()
@@ -41,6 +45,7 @@ public class HotelAdminServiceImpl implements HotelAdminService {
     }
 
     @Override
+    @Transactional
     public HotelDto create(HotelCreateDto dto, AdminPrincipal principal) {
         adminRepo.getReferenceById(principal.getId());
         Hotel hotel = new Hotel()
@@ -52,6 +57,7 @@ public class HotelAdminServiceImpl implements HotelAdminService {
     }
 
     @Override
+    @Transactional
     public HotelDto update(long id, HotelDto dto, AdminPrincipal principal) {
         Hotel hotel = hotelRepo.findById(id)
                 .orElseThrow(() -> new BusinessException("Hotel is not found"));
@@ -63,12 +69,12 @@ public class HotelAdminServiceImpl implements HotelAdminService {
     }
 
     @Override
-    public List<HotelDto> remove(long id, int pageNumber, AdminPrincipal principal) {
+    @Transactional
+    public void remove(long id, AdminPrincipal principal) {
         Hotel hotel = hotelRepo.findById(id)
                 .orElseThrow(() -> new BusinessException("Hotel is not found"));
         validateAccess(hotel, principal);
         hotelRepo.remove(hotel);
-        return getPageWithAllHotels(pageNumber);
     }
 
     private void validateAccess(Hotel hotel, AdminPrincipal principal) {

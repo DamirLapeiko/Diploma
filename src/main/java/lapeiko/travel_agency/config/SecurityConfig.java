@@ -1,11 +1,11 @@
 package lapeiko.travel_agency.config;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import lapeiko.travel_agency.model.security.AccessTokenProperties;
-import lapeiko.travel_agency.model.security.AccountRole;
 import lapeiko.travel_agency.service.AccessTokenService;
+import lapeiko.travel_agency.model.security.AccountRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

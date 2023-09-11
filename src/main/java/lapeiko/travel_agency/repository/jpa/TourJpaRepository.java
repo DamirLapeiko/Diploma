@@ -4,13 +4,11 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import lapeiko.travel_agency.model.hotel.HotelFeatures;
 import lapeiko.travel_agency.model.tour.Tour;
 import lapeiko.travel_agency.repository.TourRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class TourJpaRepository extends BaseJpaRepository<Tour, Long>
@@ -31,47 +29,53 @@ public class TourJpaRepository extends BaseJpaRepository<Tour, Long>
     }
 
     @Override
-    public List<Tour> findToursByCountry(String name, int pageSize, int pageNumber) {
+    public List<Tour> findToursByCountry(String countryQuery, int pageSize, int pageNumber) {
         return entityManager.createQuery("""
                         SELECT tour
                         From Tour tour
-                        WHERE tour.country.name = country.name
+                        JOIN FETCH tour.country
+                        WHERE tour.country.name ILIKE :countryQuery 
                         """, Tour.class)
-                .setParameter("name", name)
+                .setParameter("", countryQuery)
                 .setMaxResults(pageSize)
                 .setFirstResult(pageSize * pageNumber)
                 .getResultList();
     }
     @Override
-    public Optional<Tour> findTourWithHotelByFeatures(HotelFeatures features){
+    public List<Tour> findTourWithHotelByFeatures(String features, int pageSize, int pageNumber){
         return entityManager.createQuery("""
                         SELECT tour
                         From Tour tour
                         WHERE tour.hotel.features = hotel.features
                         """, Tour.class)
                 .setParameter("features", features)
-                .getResultStream()
-                .findFirst();
+                .setMaxResults(pageSize)
+                .setFirstResult(pageSize * pageNumber)
+                .getResultList();
     }
 
     @Override
-    public Optional<Tour> findTourByTourType(String tourType) {
+    public List<Tour> findTourByTourType(String tourType, int pageSize, int pageNumber) {
         return entityManager.createQuery("""
                         SELECT tour
                         From Tour tour
                         WHERE tour.tourType = tourType
                         """, Tour.class)
                 .setParameter("tourType", tourType)
-                .getResultStream()
-                .findFirst();
+                .setMaxResults(pageSize)
+                .setFirstResult(pageSize * pageNumber)
+                .getResultList();
     }
 
     @Override
-    public List<Tour> getByParameters(Predicate[] predicates) {
+    public List<Tour> findTourByParameters(Predicate[] predicates, int pageSize, int pageNumber) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tour> query = criteriaBuilder.createQuery(Tour.class);
         Root<Tour> tourRoot = query.from(Tour.class);
         query.select(tourRoot).where(predicates);
-        return entityManager.createQuery(query).getResultList();
+        return entityManager.createQuery(query)
+                .setMaxResults(pageSize)
+                .setFirstResult(pageSize * pageNumber)
+                .getResultList();
     }
 }
