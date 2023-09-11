@@ -16,6 +16,6 @@ public interface HotelAdminService {
 
     HotelDto update(long id, HotelDto dto, AdminPrincipal principal);
 
-    List<HotelDto> remove(long id, int pageNumber, AdminPrincipal principal);
+    void remove(long id, AdminPrincipal principal);
 
 }
