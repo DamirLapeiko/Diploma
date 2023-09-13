@@ -11,6 +11,8 @@ import lapeiko.travel_agency.service.exception.NoSearchParameterException;
 public class PredicateBuilder {
 
     protected static EntityManager entityManager;
+
+
     public static Predicate[] buildPredicate(TourSearchParameter[] parameters) throws NoSearchParameterException {
         int size = parameters.length;
         int count = 0;

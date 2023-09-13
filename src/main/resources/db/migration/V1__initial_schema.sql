@@ -17,28 +17,31 @@ CREATE TABLE client
 
 CREATE TABLE country
 (
-    id   BIGSERIAL PRIMARY KEY,
-    name TEXT NOT NULL
+    id       BIGSERIAL PRIMARY KEY,
+    name     TEXT   NOT NULL,
+    admin_id BIGINT NOT NULL REFERENCES admin
 );
 
 CREATE TABLE hotel
 (
     id       BIGSERIAL PRIMARY KEY,
-    name     TEXT   NOT NULL,
-    stars    BIGINT NOT NULL,
-    features TEXT   NOT NULL
+    name     TEXT    NOT NULL,
+    stars    INTEGER NOT NULL,
+    features TEXT    NOT NULL,
+    admin_id BIGINT  NOT NULL REFERENCES admin
 );
 
 CREATE TABLE tour
 (
     id          BIGSERIAL PRIMARY KEY,
-    date        BIGINT           NOT NULL,
-    duration    BIGINT           NOT NULL,
+    date        DATE             NOT NULL,
+    duration    INTEGER          NOT NULL,
     description TEXT             NOT NULL,
     cost        DOUBLE PRECISION NOT NULL,
     tour_type   TEXT             NOT NULL,
     hotel_id    BIGINT           NOT NULL REFERENCES hotel,
-    country_id  BIGINT           NOT NULL REFERENCES country
+    country_id  BIGINT           NOT NULL REFERENCES country,
+    admin_id    BIGINT           NOT NULL REFERENCES admin
 );
 
 CREATE TABLE review
@@ -49,4 +52,11 @@ CREATE TABLE review
     client_id  BIGINT    NOT NULL REFERENCES client,
     tour_id    BIGINT    NOT NULL REFERENCES tour,
     UNIQUE (client_id, tour_id)
+);
+
+CREATE TABLE tour_client
+(
+    tour_id   BIGINT NOT NULL REFERENCES tour (id),
+    client_id BIGINT NOT NULL REFERENCES client (id),
+    PRIMARY KEY (tour_id, client_id)
 );

@@ -27,7 +27,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AccessToken signIn(AdminSignInDto dto) {
         Admin admin = adminRepo.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new BadCredentialsException(""));
+                .orElseThrow(() -> new BadCredentialsException("Admin is not found"));
 
         if (!passwordEncoder.matches(dto.getPassword(), admin.getPasswordHash())) {
             throw new BadCredentialsException("");

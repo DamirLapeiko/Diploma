@@ -4,10 +4,12 @@ import lapeiko.travel_agency.model.country.CountryDto;
 import lapeiko.travel_agency.model.hotel.HotelDto;
 import lombok.Value;
 
+import java.time.LocalDate;
+
 @Value
 public class TourDto {
     long id;
-    int date;
+    LocalDate date;
     int duration;
     double cost;
     TourType tourType;

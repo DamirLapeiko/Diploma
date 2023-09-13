@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ import java.util.Set;
 @Setter
 public class Tour extends BaseEntity {
     @Column(name = "date", nullable = false)
-    private int date;
+    private LocalDate date;
 
     @Column(name = "duration", nullable = false)
     private int duration;
@@ -26,16 +27,16 @@ public class Tour extends BaseEntity {
     @Column(name = "cost", nullable = false)
     private double cost;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "tour_type", nullable = false)
     private TourType tourType;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @Column(name = "hotel_id", nullable = false)
+    @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @Column(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -48,7 +49,6 @@ public class Tour extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "client_id")
     )
     private Set<Client> clients;
-
 
     @Override
     public final boolean equals(Object o) {
@@ -66,3 +66,7 @@ public class Tour extends BaseEntity {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
+
+
+
+

@@ -28,7 +28,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public AccessToken signIn(ClientSignInDto dto) {
         Client client = clientRepo.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new BadCredentialsException(""));
+                .orElseThrow(() -> new BadCredentialsException("Client is not found"));
 
         if (!passwordEncoder.matches(dto.getPassword(), client.getPasswordHash())) {
             throw new BadCredentialsException("");

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(title = "Travel_agency"),
+        info = @Info(title = "Travel-agency"),
         security = @SecurityRequirement(name = "bearer-auth")
 )
 @SecurityScheme(

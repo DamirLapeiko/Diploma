@@ -23,10 +23,10 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
     implementation("com.auth0:java-jwt:4.4.0")
     implementation("org.flywaydb:flyway-core")
     compileOnly("org.projectlombok:lombok")
@@ -35,7 +35,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
+    implementation(kotlin("stdlib-jdk8"))
+
 }
 
 tasks.withType<Test> {

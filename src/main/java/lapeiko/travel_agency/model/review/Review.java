@@ -24,11 +24,11 @@ public class Review extends BaseEntity {
     private Instant createdAt;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "tour_id")
+    @JoinColumn(name = "tour_id", nullable = false)
     private Tour tour;
 
 

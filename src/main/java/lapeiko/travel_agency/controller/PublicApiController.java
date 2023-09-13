@@ -1,20 +1,22 @@
 package lapeiko.travel_agency.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lapeiko.travel_agency.service.TourClientService;
-import lapeiko.travel_agency.service.util.TourSearchParameter;
 import lapeiko.travel_agency.model.admin.AdminSignInDto;
 import lapeiko.travel_agency.model.admin.AdminSignUpDto;
 import lapeiko.travel_agency.model.client.ClientSignInDto;
 import lapeiko.travel_agency.model.client.ClientSignUpDto;
 import lapeiko.travel_agency.model.hotel.HotelDto;
+import lapeiko.travel_agency.model.hotel.HotelFeatures;
 import lapeiko.travel_agency.model.review.ReviewShortDto;
 import lapeiko.travel_agency.model.security.AccessToken;
 import lapeiko.travel_agency.model.tour.TourDto;
 import lapeiko.travel_agency.model.tour.TourShortDto;
+import lapeiko.travel_agency.model.tour.TourType;
 import lapeiko.travel_agency.service.AdminService;
 import lapeiko.travel_agency.service.ClientService;
+import lapeiko.travel_agency.service.TourClientService;
 import lapeiko.travel_agency.service.exception.NoSearchParameterException;
+import lapeiko.travel_agency.service.util.TourSearchParameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,12 +44,12 @@ public class PublicApiController {
     }
 
     @PostMapping("/admins")
-    public AccessToken signUpClient(@RequestBody AdminSignUpDto dto) {
+    public AccessToken signUpAdmin(@RequestBody AdminSignUpDto dto) {
         return adminService.signUp(dto);
     }
 
     @PostMapping("/admins/access-tokens")
-    public AccessToken sighInClient(@RequestBody AdminSignInDto dto) {
+    public AccessToken signInAdmin(@RequestBody AdminSignInDto dto) {
         return adminService.signIn(dto);
     }
 
@@ -74,17 +76,17 @@ public class PublicApiController {
         return tourService.getPageWithToursByCountry(query, page);
     }
 
-    @GetMapping("/tours/{hotelFeatures}")
+    @GetMapping("/toursByHotelFeatures")
     public List<TourShortDto> getPageWithTourAndHotelByFeatures(
-            @PathVariable String hotelFeatures,
+            @RequestParam HotelFeatures hotelFeatures,
             @RequestParam int page
     ) {
         return tourService.getPageWithTourAndHotelByFeatures(hotelFeatures, page);
     }
 
-    @GetMapping("/tours/{tourType}")
+    @GetMapping("/toursByTourType")
     public List<TourDto> getPageWithTourByTourType(
-            @PathVariable String tourType,
+            @RequestParam TourType tourType,
             @RequestParam int page
     ) {
         return tourService.getPageWithTourByTourType(tourType, page);
@@ -98,11 +100,11 @@ public class PublicApiController {
     return tourService.getToursByParameters(parameters, page);
     }
 
-    @GetMapping("/tour-reviews")
-    public List<TourShortDto> getPageWithReviewsOnTour(
-            @PathVariable ReviewShortDto dto,
+    @GetMapping("/tour/{tourId}/reviews")
+    public List<ReviewShortDto> getPageWithReviewsOnTour(
+            @PathVariable long tourId,
             @RequestParam int page
     ) {
-        return tourService.getPageWithReviewsOnTour(dto, page);
+        return tourService.getPageWithReviewsOnTour(tourId, page);
     }
 }

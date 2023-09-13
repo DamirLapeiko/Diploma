@@ -8,7 +8,7 @@ public enum TourType {
     SHOPPING_TOUR("shopping tour"),
     WEEDING_TOUR("weeding tour"),
     SAFARI("safari"),
-    SIGHTSEEING_YOUR("sightseeing tour"),
+    SIGHTSEEING_TOUR("sightseeing tour"),
     HEALTH_TOUR("health tour"),
     CHILD_TOUR("child tour");
 

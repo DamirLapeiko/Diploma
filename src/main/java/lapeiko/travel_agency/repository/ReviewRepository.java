@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ReviewRepository extends BaseRepository<Review, Long> {
 
-    List<Review> findPageWithTourAndReview(long clientId, int pageSize, int pageNumber);
+    List<Review> findPageWithTourAndReview(long tourId, int pageSize, int pageNumber);
 
 }
