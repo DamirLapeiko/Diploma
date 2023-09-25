@@ -1,6 +1,7 @@
 package lapeiko.travel_agency.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lapeiko.travel_agency.model.country.CountryCreateDto;
 import lapeiko.travel_agency.model.country.CountryDto;
 import lapeiko.travel_agency.model.hotel.HotelCreateDto;
 import lapeiko.travel_agency.model.hotel.HotelDto;
@@ -26,7 +27,7 @@ public class AdminController {
 
     @PostMapping("/tours/createTour")
     public TourDto createTour(
-            @PathVariable TourDto dto,
+            @RequestParam TourDto dto,
             @AuthenticationPrincipal AdminPrincipal principal
     ) {
         return tourService.create(dto, principal);
@@ -51,7 +52,7 @@ public class AdminController {
 
     @PostMapping("/countries/createCountry")
     public CountryDto createCountry(
-            @PathVariable CountryDto dto,
+            @RequestParam CountryCreateDto dto,
             @AuthenticationPrincipal AdminPrincipal principal
     ) {
         return countryService.create(dto, principal);
@@ -76,7 +77,7 @@ public class AdminController {
 
     @PostMapping("/hotels/createHotel")
     public HotelDto createHotel(
-            @PathVariable HotelCreateDto dto,
+            @RequestParam HotelCreateDto dto,
             @AuthenticationPrincipal AdminPrincipal principal
     ) {
         return hotelService.create(dto, principal);

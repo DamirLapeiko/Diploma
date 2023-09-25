@@ -1,6 +1,7 @@
 package lapeiko.travel_agency.service.impl;
 
 import lapeiko.travel_agency.model.country.Country;
+import lapeiko.travel_agency.model.country.CountryCreateDto;
 import lapeiko.travel_agency.model.country.CountryDto;
 import lapeiko.travel_agency.repository.AdminRepository;
 import lapeiko.travel_agency.repository.CountryRepository;
@@ -34,7 +35,7 @@ public class CountryAdminServiceImpl implements CountryAdminService {
 
     @Override
     @Transactional
-    public CountryDto create(CountryDto dto, AdminPrincipal principal) {
+    public CountryDto create(CountryCreateDto dto, AdminPrincipal principal) {
         adminRepo.getReferenceById(principal.getId());
         Country country = new Country()
                 .setName(dto.getName());
